@@ -2,7 +2,7 @@
 var express = require('express'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser'),
-    db = require('./models')
+    db = require('./models');
 
 //create instances
 var app = express(),
@@ -10,6 +10,8 @@ var app = express(),
 
 // set port to env or 3001
 var port = process.env.API_PORT || 3001;
+
+var controllers = require('./controllers')
 
 //db config
 mongoose.connect('mongodb://localhost/wayfarer');
@@ -37,122 +39,26 @@ router.get('/', function(req,res) {
   res.json({message: 'API Initialized!'});
 });
 
-//adding the /cities route from our /api router
+// //*******Cities*******//
 router.route('/cities')
-  //retrieve all posts from the db
-  .get(function(req, res){  // GET all cities
-    //looks at our Post Schema
-    db.City.find(function(err, posts){
-      if (err)
-        res.send(err);
-        res.json(posts);
-    })
-  })
-  .post(function(req, res){
-    var city = new db.City();
-    city.city = req.body.city; //change to name?
-    city.country = req.body.country;
-    city.img = req.body.img;
-
-    city.save(function(err){
-      if (err)
-        res.send(err);
-        res.json({message: 'City post success!'});
-    });
-  });
+  .get(controllers.city.getAllCities) //GET all cities
+  .post(controllers.city.postCity) //CREATE new city
 
 router.route('/cities/:id')
-  //retrive one specific id
-  .get(function(req, res){  // GET a city
-    db.City.findById(req.params.id, function(err, city){
-      if (err)
-        res.send(err);
-        res.json(city);
-    })
-  })
-  .delete(function(req, res){ // DELETE a city
-    db.City.findOneAndRemove({_id: req.params.cityId}, function(err){
-      if (err){
-        res.status(500);
-      }
-      res.json({message: 'City Deleted!'})
-    })
-  })
-  .put(function (req, res) {  // UPDATE a city
-    db.City.findById(req.params.id, function (err, city) {
-      if (err) return res.json(err);
-      for (let i in req.body) {
-        city[i] = req.body[i];
-      }
-      city.save(function (err, city) {
-        if (err) return res.json(err);
-        res.json(city);
-      })
-    })
-  })
+   .get(controllers.city.getOne)
+   .delete(controllers.city.destroy)
+   .put(controllers.city.update)
 
+//********Posts******//
 router.route('/cities/:cityId/posts')
-  .get(function(req, res){  // GET all posts
-    db.City.findById(req.params.cityId, function(err, city) {
-      if (err) res.json(err);
-      res.json(city.posts);
-    });
-  })
-  .post(function(req, res){ // POST a new post
-    db.City.findById(req.params.cityId, function(err, city){
-      const doc = {
-        user: req.body.user,
-        text: req.body.text,
-        date: new Date()
-      };
-      var newPost = new db.Post(doc);
-      console.log("NEW POST", newPost);
-      city.posts.unshift(newPost);
-      city.save(function(err, savedCity){
-        if (err) res.json(err);
-        res.json(newPost);
-      });
-    });
-  })
+  .get(controllers.post.getAllPosts)
+  .post(controllers.post.newPost)
 
-//route to delete specific post by id
 router.route('/cities/:cityId/posts/:postId')
-  .delete(function(req, res){
-    db.City.findById(req.params.cityId, function(err, city){
-      let correctPost = city.posts.id(req.params.postId)
-        console.log("req.params.postId", req.params.postId);
-      if(correctPost){
-        correctPost.remove();
-        city.save(function(err, saved){
-          console.log("Removed ", correctPost);
-          res.status(200).send();
-        })
-      }
-      else{
-        return res.status(404).send("OH NO!!");
-      }
-    })
-  })
-  .get(function (req, res) { // get one post
-    console.log("GET one post")
-    db.City.findById(req.params.cityId, function (err, city) {
-      if (err) return res.json(err);
-      res.json(city.posts.id(req.params.postId));
-    });
-  })
-  .put(function (req, res) {  // PUT one post
-    db.City.findById(req.params.cityId, function (err, city) {
-      if (err) return res.json(err);
-      const post = city.posts.id(req.params.postId);
-      for (let i in req.body) {
-        post[i] = req.body[i];
-      }
-      post.save(function(err, city) {
-        if (err) return res.json(err);
-        res.json(post);
-      });
-    });
-  })
+  .get(controllers.post.getOne)
+  .delete(controllers.post.destroy)
+  .put(controllers.post.updatePost)
+
 
 //start server
 app.listen(port, function() {
