@@ -11,14 +11,20 @@ class SlideShowInterface extends Component {
           onSelect={this.onSelect}
           className="carousel-fade"
         >
-          <div style={{height:300,width:"100%",backgroundColor:"skyblue"}}>
-            123
+          <div style={{height:300,width:"100%"}}>
+            <div>
+              <img src="/images/SeattleNeedle.jpg" alt="SeattleNeedle" width="100%"/>
+            </div>
           </div>
-          <div style={{height:300,width:"100%",backgroundColor:"aqua"}}>
-            456
+          <div style={{height:300,width:"100%"}}>
+            <div>
+              <img src="/images/SFSunrise.jpg" alt="SFSunrise" width="100%"/>
+            </div>
           </div>
-          <div style={{height:300,width:"100%",backgroundColor:"lightpink"}}>
-            789
+          <div style={{height:300,width:"100%"}}>
+            <div>
+              <img src="/images/sydney_opera_house_australia_2-wallpaper-1920x1080.jpg" alt="SydneyNight" width="100%"/>
+            </div>
           </div>
           <div style={{height:300,width:"100%"}}>
             <div>
