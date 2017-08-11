@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import NavContainer from './components/NavContainer';
+import GuestContainer from './components/GuestContainer';
 import './App.css';
 
 class App extends Component {
@@ -13,6 +14,7 @@ class App extends Component {
     return (
       <div className="App">
         <NavContainer isLoggedIn={this.state.isLoggedIn} />
+        <GuestContainer/>
       </div>
     );
   }
