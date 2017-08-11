@@ -52,9 +52,9 @@ function getAllCities(req, res){
   }
 
   module.exports = {
-  getAllCities: getAllCities,
-  postCity: postCity,
-  getOne: getOne,
-  destroy: destroy,
-  update: update
+    getAllCities: getAllCities,
+    postCity: postCity,
+    getOne: getOne,
+    destroy: destroy,
+    update: update
   }
