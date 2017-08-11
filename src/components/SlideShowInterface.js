@@ -4,7 +4,7 @@ import {React_Bootstrap_Carousel} from 'react-bootstrap-carousel';
 class SlideShowInterface extends Component {
   render() {
     return(
-    <div className = 'SlideShow'>
+    <div className='SlideShow'>
       <div style={{height:300,margin:20}}>
         <React_Bootstrap_Carousel
           animation={true}
