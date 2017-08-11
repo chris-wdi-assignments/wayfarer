@@ -44,7 +44,7 @@ router.route('/cities')
   .get(controllers.city.getAllCities) //GET all cities
   .post(controllers.city.postCity) //CREATE new city
 
-router.route('/cities/:id')
+router.route('/cities/:cityId')
    .get(controllers.city.getOne)
    .delete(controllers.city.destroy)
    .put(controllers.city.update)
