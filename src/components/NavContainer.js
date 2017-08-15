@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import logo from '../logo.svg';
 import NavGuestInterface from './NavGuestInterface';
 import NavUserInterface from './NavUserInterface';
+import {Link} from 'react-router-dom'
+
 
 class NavContainer extends Component {
   constructor (props) {
@@ -17,7 +19,7 @@ class NavContainer extends Component {
             {
               //<img src={logo} alt="Wayfarer" />
             }
-            <a className="navbar-brand">Wayfarer</a>
+            <Link to={"/"} className="navbar-brand">Wayfarer</Link>
           </div>
           <div>
             {currentInterface}
