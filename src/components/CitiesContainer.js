@@ -6,6 +6,7 @@ import {Switch, Route} from 'react-router-dom';
 
 class CitiesContainer extends Component {
   render () {
+    console.log('on CitiesContainer render, props:', this.props);
     return (
       <div className="container">
         <div className="row">

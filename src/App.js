@@ -6,6 +6,9 @@ import CitiesContainer from './components/CitiesContainer.js';
 import ProfileContainer from './components/ProfileContainer.js';
 import './App.css';
 import $ from 'jquery-ajax';
+import {createBrowserHistory} from 'history';
+
+//console.log(history);
 
 class App extends Component {
   constructor(props) {
@@ -20,7 +23,8 @@ class App extends Component {
         image: '',
         description: 'default city description',
         posts: []
-      }
+      },
+      history: createBrowserHistory()
     };
   }
   componentDidMount () {
@@ -41,6 +45,8 @@ class App extends Component {
           cities: cities,
           selectedCity: selectedCity
         });
+        console.log('after ajax res, selectedCity is', selectedCity.city);
+        this.state.history.push('/cities/' + selectedCity._id);
       }
     });
   }
@@ -83,6 +89,10 @@ class App extends Component {
           <NavContainer isLoggedIn={this.state.isLoggedIn} />
           <Switch>
             <Route path="/guest" render={(props) => <GuestContainer />} />
+            <Route path="/cities" exact render={() => {
+              console.log('hit /cities route, when selected is:', this.state.selectedCity._id);
+              return <Redirect to={`/cities/${this.state.selectedCity._id}`} />
+            }} />
             <Route path="/cities/:cityId" render={(props) => {
               return (<CitiesContainer
                 cities={this.state.cities}
@@ -94,7 +104,7 @@ class App extends Component {
             }/>
             <Route exact path="/" render={props => {
               const dest = (this.state.isLoggedIn
-                ? `/cities/${this.state.selectedCity._id}`
+                ? "/cities"
                 : "/guest");
               return <Redirect to={dest} />;
             }} />

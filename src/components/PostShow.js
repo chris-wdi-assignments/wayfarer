@@ -9,7 +9,8 @@ class PostShow extends Component {
       <div>
         <h1>{post.title}<small>&nbsp;by {post.user}</small></h1>
         <p>{post.text}</p>
-        <Link to={`/cities/${this.props.city._id}`} className="btn">Return to {this.props.city.city}</Link>
+        <Link to={`/cities/${this.props.city._id}`} className="btn btn-primary">Return to {this.props.city.city}</Link>
+        <button className="btn btn-default">Edit</button>
       </div>
     )
   }
