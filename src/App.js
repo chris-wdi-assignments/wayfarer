@@ -87,7 +87,6 @@ class App extends Component {
                 getPost={this.getPost.bind(this)}
                 selectedCity={this.getCity(props.match.params.cityId)}
                 addNewPost={this.addNewPost.bind(this)}
-                isLoggedIn={this.isLoggedIn.bind(this)}
               />)}
             }/>
             <Route exact path="/" render={props => {
