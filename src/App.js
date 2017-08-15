@@ -10,7 +10,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoggedIn : true, // later should be false
+      isLoggedIn : false, // later should be false
       user: {name: 'Chris'}, // dummy, replace later
       cities: [],
       selectedCity: { // to prevent code breakage, create dummy properties
@@ -87,6 +87,7 @@ class App extends Component {
                 getPost={this.getPost.bind(this)}
                 selectedCity={this.getCity(props.match.params.cityId)}
                 addNewPost={this.addNewPost.bind(this)}
+                isLoggedIn={this.isLoggedIn.bind(this)}
               />)}
             }/>
             <Route exact path="/" render={props => {

@@ -3,6 +3,11 @@ var express = require('express'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser'),
     db = require('./models');
+    cookieParser = require('cookie-parser'),
+    session = require('express-session'),
+    passport = require('passport'),
+    LocalStrategy = require('passport-local').Strategy;
+
 
 //create instances
 var app = express(),
@@ -58,6 +63,18 @@ router.route('/cities/:cityId/posts/:postId')
   .get(controllers.post.getOne)
   .delete(controllers.post.destroy)
   .put(controllers.post.updatePost)
+
+//passport routes
+router.route('/login').post(passport.authenticate('local'), function (req, res) {
+  console.log(JSON.stringify(req.user));
+  res.send(req.user);
+});
+router.route('/logout').get(function (req, res) {
+  console.log("BEFORE logout", req);
+  req.logout();
+  res.send(req);
+  console.log("AFTER logout", req);
+});
 
 
 //start server
