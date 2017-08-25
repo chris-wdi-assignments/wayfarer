@@ -1,12 +1,12 @@
-# <img src="../public/images/wayfarer.png" width="60">
-##Project Wayfarer
+# <img src="./public/images/wayfarer.png" width="60">
+## Project Wayfarer
 
-##Introduction
+## Introduction
 
 In this app, users will be able to check out cities from all over the world and view the posts (or comments) from other users.
 The users can create a user profile and leave a post under a city of his/her choice.
 
-##Technologies Used
+## Technologies Used
 
 **Server Side:**
 - NodeJS & Express
