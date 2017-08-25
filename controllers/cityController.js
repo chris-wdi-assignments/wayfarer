@@ -22,7 +22,7 @@ function getAllCities(req, res){
   }
 
   function getOne(req, res){  // GET a city
-    db.City.findById(req.params.id, function(err, city){
+    db.City.findById(req.params.cityId, function(err, city){
       if (err)
         res.send(err);
         res.json(city);

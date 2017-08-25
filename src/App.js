@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import React, {Component} from 'react';
+import { BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
 import NavContainer from './components/NavContainer';
 import GuestContainer from './components/GuestContainer';
 import CitiesContainer from './components/CitiesContainer.js';
@@ -8,15 +8,20 @@ import './App.css';
 import $ from 'jquery-ajax';
 import {createBrowserHistory} from 'history';
 
-//console.log(history);
-
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoggedIn : true, // later should be false
-      user: {name: 'Chris', hometown: 'Aiea', image: '../images/chrisF.jpg'}, // dummy, replace later
+      isLoggedIn: true, // later should be false
+      user: {
+        name: 'Chris',
+        hometown: 'Aiea',
+        image: '../images/chrisF.jpg'
+      }, // dummy, replace later
       cities: [],
+      showModal: false, //modal won't show until setState to true
+      newEditTitle: "",
+      newEditDescription: "",
       selectedCity: { // to prevent code breakage, create dummy properties
         city: 'default cityname',
         country: 'default country',
@@ -27,9 +32,55 @@ class App extends Component {
       history: createBrowserHistory()
     };
   }
-  componentDidMount () {
-    this.updateCities();  // after App first mounts, populate cities from db
+
+  componentDidMount() {
+    this.updateCities(); // after App first mounts, populate cities from db
   }
+
+  addNewPost(cityId, formData) { // create a new post
+    let newPost = {
+      title: $(formData.title).val(),
+      text: $(formData.text).val(),
+      user: this.state.user.name
+    }
+    $.ajax({
+      method: 'POST',
+      url: `${this.props.apiUrl}/cities/${cityId}/posts`,
+      data: newPost,
+      success: this.updateCities.bind(this)
+    });
+  }
+  getCity(cityId) {
+    let city = this.state.cities.reduce((prev, curr) => {
+      return prev || (curr._id === cityId ? curr : null);
+    }, null);
+    return city || { // set default if city === null
+      city: 'default cityname',
+      country: 'default country',
+      image: '',
+      description: 'default city description',
+      posts: []
+    }
+  }
+
+  getPost(cityId, postId) {
+    return this.getCity(cityId).posts.reduce((prev, curr) => {
+      return prev || (curr._id === postId ? curr : null);
+    }, null);
+  }
+
+  toggleModal = () => {
+    this.setState({
+      showModal: !this.state.showModal
+    })
+    console.log("modal flipped", this.state.showModal);
+  }
+
+  handleSubmitFromEdit = (event) => {
+    event.preventDefault()
+    this.toggleModal()
+  }
+
   updateCities() {
     $.ajax({
       method: 'GET',
@@ -50,47 +101,37 @@ class App extends Component {
       }
     });
   }
-  addNewPost(cityId, formData) { // create a new post
-    let newPost = {
-      title: $(formData.title).val(),
-      text: $(formData.text).val(),
-      user: this.state.user.name
-    }
+
+  handleSubmit(event, cityId, postId){
+    event.preventDefault()
+    console.log('in handleSubmit at App,js');
+    console.log('title', this.state.newEditTitle);
     $.ajax({
-      method: 'POST',
-      url: `${this.props.apiUrl}/cities/${cityId}/posts`,
-      data: newPost,
-      success: this.updateCities.bind(this)
-    });
-  }
-  getCity(cityId) {
-      let city = this.state.cities.reduce((prev, curr) => {
-        return prev || (curr._id === cityId ? curr : null);
-      }, null);
-      return city || {  // set default if city === null
-        city: 'default cityname',
-        country: 'default country',
-        image: '',
-        description: 'default city description',
-        posts: []
+      method: 'PUT',
+      url: `${this.props.apiUrl}/cities/${cityId}/posts/${postId}`,
+      data: {title: this.state.newEditTitle, text: this.state.newEditDescription},
+      success: (city) => {
+        console.log('PUT successful. we successfully updated:', city);
+        this.updateCities();
       }
-    }
+    })
+    console.log("TITLE", this.state.newEditTitle);
+    console.log("DESCRIPTION", this.state.newEditDescription);
+    this.toggleModal();
+  }
 
-    getPost(cityId, postId) {
-      return this.getCity(cityId).posts.reduce((prev, curr) => {
-        return prev || (curr._id === postId ? curr : null);
-      }, null);
-    }
+  destroyPost(cityId, postId) {
+    $.ajax({
+      method: 'DELETE',
+      url: `${this.props.apiUrl}/cities/${cityId}/posts/${postId}`,
+      success: this.updateCities.bind(this)
+    })
+  }
 
-
-    destroyPost(cityId, postId){
-
-      $.ajax({
-        method: 'DELETE',
-        url: `${this.props.apiUrl}/cities/${cityId}/posts/${postId}`,
-        success: this.updateCities.bind(this)
-      })
-    }
+  onChange(event){
+    let formId = $(event.target).closest('.validate').data('id-type')
+    this.setState({[formId]: event.target.value});
+  }
 
   render() {
     return (
@@ -111,6 +152,12 @@ class App extends Component {
                 selectedCity={this.getCity(props.match.params.cityId)}
                 addNewPost={this.addNewPost.bind(this)}
                 destroyPost={this.destroyPost.bind(this)}
+                toggleModal={this.toggleModal.bind(this)}
+                showModal={this.state.showModal}
+                handleSubmit={this.handleSubmit.bind(this)}
+                newEditDescription={this.state.newEditDescription}
+                newEditTitle={this.state.newEditTitle}
+                onChange={this.onChange.bind(this)}
               />)}
             }/>
             <Route exact path="/" render={props => {

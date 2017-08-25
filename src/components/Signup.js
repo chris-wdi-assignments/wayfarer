@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {browserHistory} from 'react-router-dom';
 import $ from 'jquery-ajax';
-import { Button, Card, Row, Col } from 'react-materialize';
+import { Button, Card, Row, col } from 'react-materialize';
 
 class SignUp extends Component {
   constructor(props) {

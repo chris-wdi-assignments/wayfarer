@@ -55,7 +55,7 @@ function updatePost(req, res){
     for (let i in req.body) {
       post[i] = req.body[i];
     }
-    post.save(function(err, city) {
+    city.save(function(err, city) {
       if (err) return res.json(err);
       res.json(post);
     });

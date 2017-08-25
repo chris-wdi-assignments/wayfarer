@@ -6,7 +6,6 @@ import {Switch, Route} from 'react-router-dom';
 
 class CitiesContainer extends Component {
   render () {
-    console.log('on CitiesContainer render, props:', this.props);
     return (
       <div className="container">
         <div className="row">
@@ -14,15 +13,15 @@ class CitiesContainer extends Component {
             cities={this.props.cities}
           />
           <Switch>
-            <Route path={`/cities/:cityId`} exact render={props => {
+            <Route path={`/cities/:cityId`} exact render={ props => {
               const cityId = props.match.params.cityId; // get _id of city to render
               return <City addNewPost={this.props.addNewPost} city={this.props.getCity(cityId)} />
             }} />
-            <Route path={"/cities/:cityId/posts/:postId"} render={(props) => {
+            <Route path={"/cities/:cityId/posts/:postId"} render={ props => {
               const cityId = props.match.params.cityId,
                 postId = props.match.params.postId;
               return (
-                <PostShow city={this.props.getCity(cityId)} post={this.props.getPost(cityId, postId)} destroyPost={this.props.destroyPost}/>
+                <PostShow city={this.props.getCity(cityId)} post={this.props.getPost(cityId, postId)} destroyPost={this.props.destroyPost} toggleModal={this.props.toggleModal} showModal={this.props.showModal} handleSubmit={this.props.handleSubmit} onChange={this.props.onChange} newEditTitle={this.props.newEditTitle} newEditDescription={this.props.newEditDescription}/>
               )
             }} />
           </Switch>
