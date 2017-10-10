@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {BrowserRouter, Route, Switch, Redirect, withRouter} from 'react-router-dom';
-import NavContainer from './components/NavContainer';
+import NavContainer from './head/NavContainer';
 import GuestContainer from './components/GuestContainer';
 import CitiesContainer from './components/CitiesContainer.js';
 import ProfileContainer from './components/ProfileContainer.js';
@@ -16,10 +16,17 @@ class App extends Component {
         name: 'Chris',
         hometown: 'Aiea',
         image: '../images/chrisF.jpg'
-      }, // dummy, replace later
-      isLoggedIn : false, // later should be false
+      },
+      signUpUserName: '',
+      signUpFirstName: '',
+      signUpLastName: '',
+      signUpPassWord:'',
+      userName: '',
+      isSignInOpen: false,
+      isSignUpOpen: false,
+      isLoggedIn : false,
       cities: [],
-      showModal: false, //modal won't show until setState to true
+      showModal: false,
       newEditTitle: "",
       newEditDescription: "",
       selectedCity: { // to prevent code breakage, create dummy properties
@@ -30,6 +37,31 @@ class App extends Component {
         posts: []
       }
     };
+  }
+
+//sign up modal
+  toggleSignUpModal = () => {
+    this.setState({isSignUpOpen: !this.state.isSignUpOpen})
+  }
+
+  handleSignupSubmit = (event) => {
+    $.ajax({
+      method: "POST",
+      url: "http://localhost:3001/signup",
+      data: {
+        first_name: this.state.signUpFirstName,
+        last_name: this.state.signUpLastName,
+        password: this.state.signUpPassWord,
+        username: this.state.signUpUserName
+      }
+    })
+    .then((res) => {
+      console.log(res);
+      this.toggleSignUpModal()
+    },
+    (err) => {
+      alert('User already exists')
+    })
   }
 
   componentDidMount() {
@@ -158,11 +190,14 @@ class App extends Component {
   render() {
   return (
     <div className="App">
-      <NavContainer 
+      <NavContainer
         login={this.login.bind(this)}
         isLoggedIn={this.state.isLoggedIn}
         logout={this.logout.bind(this)}
         user={this.state.user}
+        toggleSignUpModal={(event) => this.toggleSignUpModal(event)}
+        handleSignupSubmit={(event) => this.handleSignupSubmit(event)}
+        isSignUpOpen={this.state.isSignUpOpen}
       />
       <Switch>
         <Route path="/guest" render={(props) => <GuestContainer />} />
