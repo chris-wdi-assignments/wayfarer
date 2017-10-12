@@ -44,7 +44,7 @@ class LoginModal extends Component{
               </label>
             </div>
           </Modal.Body>
-          
+
           <Modal.Footer>
             <button type="submit" className="btn btn-primary">Log In</button>
           </Modal.Footer>
