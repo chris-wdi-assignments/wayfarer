@@ -44,6 +44,9 @@ class City extends Component {
               <button
                 type="button"
                 className="btn btn-primary btn-lg"
+                style={{
+                  margin: '1em'
+                }}
                 onClick={e=>this.setState({modalIsOpen:true})}
               >
                 New Post

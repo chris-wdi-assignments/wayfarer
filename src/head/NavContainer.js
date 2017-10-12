@@ -1,14 +1,16 @@
 import React, {Component} from 'react';
 import logo from '../logo.svg';
 import LoginModal from './LoginModal';
+import SignupModal from './SignupModal'
 import {Link} from 'react-router-dom'
 
 class NavContainer extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      modalIsOpen: false
-    }; //?
+      loginModalIsOpen: false,
+      signUpModalIsOpen: false
+    };
   }
   render () {
     let currentInterface;
@@ -22,8 +24,8 @@ class NavContainer extends Component {
     } else {
       currentInterface = (
         <ul className="nav navbar-nav navbar-right">
-          <li><a href="#" onClick={()=>this.setState({modalIsOpen:true})}>Log In</a></li>
-          <li><a>Sign Up</a></li>
+          <li><a href="#" onClick={()=>this.setState({loginModalIsOpen:true})}>Log In</a></li>
+          <li><a href="#" onClick={()=>this.setState({signUpModalIsOpen:true})}>Sign Up</a></li>
         </ul>
       )
     }
@@ -41,8 +43,17 @@ class NavContainer extends Component {
         </nav>
         <LoginModal
           login={this.props.login}
-          closeModal={()=>this.setState({modalIsOpen:false})}
-          isOpen={this.state.modalIsOpen} />
+          closeModal={()=>this.setState({loginModalIsOpen:false})}
+          isOpen={this.state.loginModalIsOpen}
+        />
+        <SignupModal
+          isSignUpOpen={this.state.signUpModalIsOpen}
+          toggleSignupModal={this.props.toggleSignupModal}
+          handleSignupSubmit={this.props.handleSignupSubmit}
+          handleChange={this.props.handleChange}
+          closeModal={()=>this.setState({signUpModalIsOpen:false})}
+        />
+
       </div>
     )
   }
