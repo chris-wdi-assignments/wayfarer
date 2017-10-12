@@ -1,4 +1,4 @@
-# <img src="./public/images/wayfarer.png" width="60">
+# <img src="./public/images/wayfarer.png" width="400">
 ## Project Wayfarer
 
 ## Introduction
@@ -28,6 +28,6 @@ The users can create a user profile and leave a post under a city of his/her cho
 
 
 ### Created by Chris Fujino, Garrick Ngai, and Stacy Suen
-####aka "the Smittens"
+#### aka "the Smittens"
 
 # <img src="../public/images/smittens.jpeg" width="60">
