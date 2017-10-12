@@ -57,8 +57,9 @@ app.use('/api', router);
 router.get('/', function(req,res) {
   res.json({message: 'API Initialized!'});
 });
-
-// //*******Cities*******//
+///////////////////////////////
+////*******Cities*******////////
+///////////////////////////////
 router.route('/cities')
   .get(controllers.city.getAllCities) //GET all cities
   .post(controllers.city.postCity) //CREATE new city
@@ -68,7 +69,9 @@ router.route('/cities/:cityId')
    .delete(controllers.city.destroy)
    .put(controllers.city.update)
 
-//********Posts******//
+////////////////////////////
+//********Posts******//////
+////////////////////////////
 router.route('/cities/:cityId/posts')
   .get(controllers.post.getAllPosts)
   .post(controllers.post.newPost)
@@ -78,6 +81,9 @@ router.route('/cities/:cityId/posts/:postId')
   .delete(controllers.post.destroy)
   .put(controllers.post.updatePost)
 
+////////////////////////////
+//////*********Users********/////////////
+////////////////////////////
 router.route('/users')
   .get(controllers.user.index)
   .post(controllers.user.create)
