@@ -237,6 +237,12 @@ class App extends Component {
           }}/>
 
         </Switch>
+        
+        <footer className="page-footer">
+          <div className="container">
+            <span className="text-muted"> © 2017 Copyright Team Smittens </span>
+          </div>
+        </footer>
 
       </div>
     );
